@@ -2,6 +2,7 @@ package kz.myproject.onlinePay.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import kz.myproject.onlinePay.entity.enums.Role;
 import org.hibernate.annotations.CreationTimestamp;
 import java.util.Date;
 import java.util.List;
@@ -39,10 +40,14 @@ public class User {
     //@DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date createdDate;
 
+    @Column(name="role")
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     public User() {
     }
 
-    public User(long id, String firstName, String lastName, String email, String password, List<BankAccount> bankAccounts, Date createdDate) {
+    public User(long id, String firstName, String lastName, String email, String password, List<BankAccount> bankAccounts, Date createdDate, Role role) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -50,6 +55,7 @@ public class User {
         this.password = password;
         this.bankAccounts = bankAccounts;
         this.createdDate = createdDate;
+        this.role = role;
     }
 
     public long getId() {
@@ -106,5 +112,13 @@ public class User {
 
     public void setBankAccounts(List<BankAccount> bankAccounts) {
         this.bankAccounts = bankAccounts;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
