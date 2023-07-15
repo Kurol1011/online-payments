@@ -3,6 +3,7 @@ package kz.myproject.onlinePay.service.impl;
 
 import jakarta.transaction.Transactional;
 import kz.myproject.onlinePay.entity.BankAccount;
+import kz.myproject.onlinePay.entity.Transaction;
 import kz.myproject.onlinePay.repo.BankAccountRepository;
 import kz.myproject.onlinePay.repo.TransactionRepository;
 import kz.myproject.onlinePay.service.intf.TransactionService;
@@ -53,6 +54,11 @@ public class TransactionServiceImpl implements TransactionService {
         toBankAccount.get().setBalance(toBankAccount.get().getBalance().add(transferAmount));
         bankAccountRepository.save(fromBankAccount.get());
         bankAccountRepository.save(toBankAccount.get());
+        Transaction transaction = new Transaction();
+        transaction.setFromBankAccount(fromBankAccountId);
+        transaction.setToBankAccount(toBankAccountId);
+        transaction.setTransferAmount(transferAmount);
+        transactionRepository.save(transaction);
         //надо бы сюда каскадирование прикрутить
     }
 }
