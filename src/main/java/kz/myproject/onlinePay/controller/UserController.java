@@ -18,12 +18,12 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
+    @GetMapping("/about-me")
     public ResponseEntity<UserDTO> getUser(){
         return ResponseEntity.ok(userService.convertToUserDTO(userService.getCurrentUser()));
     }
 
-    @GetMapping
+    @GetMapping("/all-users")
     public ResponseEntity<List<UserDTO>> getAllUsers(){
         List<UserDTO> list = userService.getAllUsers().stream().map(u -> userService.convertToUserDTO(u)).collect(Collectors.toList());
         return ResponseEntity.ok(list);

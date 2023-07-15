@@ -23,12 +23,12 @@ public class UserDTO {
     private String email;
 
 
-    private List<BankAccount> bankAccounts;
+    private List<Long> bankAccounts;
 
     public UserDTO() {
     }
 
-    public UserDTO(long id, String firstName, String lastName, String email, List<BankAccount> bankAccounts) {
+    public UserDTO(long id, String firstName, String lastName, String email, List<Long> bankAccounts) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -68,11 +68,11 @@ public class UserDTO {
         this.email = email;
     }
 
-    public List<BankAccount> getBankAccounts() {
+    public List<Long> getBankAccounts() {
         return bankAccounts;
     }
 
-    public void setBankAccounts(List<BankAccount> bankAccounts) {
+    public void setBankAccounts(List<Long> bankAccounts) {
         this.bankAccounts = bankAccounts;
     }
 }

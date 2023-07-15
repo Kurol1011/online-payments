@@ -19,11 +19,11 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     @Override
-    public void createNewAccount(User user) {
+    public void createNewAccount(User user,long balance) {
         BankAccount bankAccount = new BankAccount();
         bankAccount.setOwner(user);
         bankAccount.setCurrency(Currency.getInstance("USD"));
-        bankAccount.setBalance(BigDecimal.valueOf(0.00));
+        bankAccount.setBalance(BigDecimal.valueOf(balance));
         bankAccountRepository.save(bankAccount);
     }
 
@@ -38,5 +38,10 @@ public class BankAccountServiceImpl implements BankAccountService {
     @Override
     public double getBalance(User user) {
         return bankAccountRepository.findByOwner_id(user.getId()).get().getBalance().doubleValue();
+    }
+
+    @Override
+    public BankAccount getById(long id) {
+        return bankAccountRepository.findById(id).get();
     }
 }

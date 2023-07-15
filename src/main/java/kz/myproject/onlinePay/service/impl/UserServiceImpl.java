@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -27,8 +28,8 @@ public class UserServiceImpl implements UserService {
         userDTO.setId(user.getId());
         userDTO.setFirstName(user.getFirstName());
         userDTO.setLastName(user.getLastName());
-        userDTO.setEmail(userDTO.getEmail());
-        userDTO.setBankAccounts(user.getBankAccounts());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setBankAccounts(user.getBankAccounts().stream().map(ac -> ac.getId()).collect(Collectors.toList()));
         return userDTO;
     }
 
