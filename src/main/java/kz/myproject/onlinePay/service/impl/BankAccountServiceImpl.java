@@ -4,6 +4,7 @@ import kz.myproject.onlinePay.entity.BankAccount;
 import kz.myproject.onlinePay.entity.User;
 import kz.myproject.onlinePay.repo.BankAccountRepository;
 import kz.myproject.onlinePay.service.intf.BankAccountService;
+import kz.myproject.onlinePay.util.exception.BankAccountTransactionException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -29,6 +30,9 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Override
     public void addBalance(long newBalance,long bankAccountId) {
+        if(newBalance<0){
+            throw new BankAccountTransactionException("Введите положительный баланс");
+        }
         BankAccount bankAccount = bankAccountRepository.findById(bankAccountId).get();
         bankAccount.setBalance(bankAccount.getBalance().add(BigDecimal.valueOf(newBalance)));
         bankAccountRepository.save(bankAccount);
