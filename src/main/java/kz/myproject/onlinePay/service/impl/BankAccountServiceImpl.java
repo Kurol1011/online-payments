@@ -28,7 +28,7 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     @Override
-    public void setBalance(long newBalance,long bankAccountId) {
+    public void addBalance(long newBalance,long bankAccountId) {
         BankAccount bankAccount = bankAccountRepository.findById(bankAccountId).get();
         bankAccount.setBalance(bankAccount.getBalance().add(BigDecimal.valueOf(newBalance)));
         bankAccountRepository.save(bankAccount);

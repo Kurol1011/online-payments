@@ -3,8 +3,11 @@ package kz.myproject.onlinePay.dto;
 public class BalanceRequest {
     private long balance;
 
+    public BalanceRequest() {
+    }
+
     public BalanceRequest(long balance) {
-        this.balance = balance; //todo Is will be worked without construct?
+        this.balance = balance;
     }
 
     public long getBalance() {

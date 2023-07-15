@@ -3,6 +3,7 @@ package kz.myproject.onlinePay.security;
 import kz.myproject.onlinePay.entity.User;
 import kz.myproject.onlinePay.entity.enums.Role;
 import kz.myproject.onlinePay.repo.UserRepository;
+import kz.myproject.onlinePay.util.exception.UserIsAlreadyExistException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,6 +25,11 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse register(RegisterRequest request) {
+
+        if(userRepository.findByEmail(request.getEmail()).isPresent()){
+            throw new UserIsAlreadyExistException("Пользователь с таким email уже существует");
+        }
+
         User user = new User();
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());

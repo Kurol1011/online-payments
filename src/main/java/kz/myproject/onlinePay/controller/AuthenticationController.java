@@ -1,11 +1,15 @@
 package kz.myproject.onlinePay.controller;
 
 
+import jakarta.validation.Valid;
 import kz.myproject.onlinePay.security.AuthenticationRequest;
 import kz.myproject.onlinePay.security.AuthenticationResponse;
 import kz.myproject.onlinePay.security.AuthenticationService;
 import kz.myproject.onlinePay.security.RegisterRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,8 +26,13 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request){
+    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request, BindingResult bindingResult){
         //logger.info("start register service");
+        if (bindingResult.hasErrors()) {
+            // Обработка ошибок валидации
+            String errorMessage = getValidationErrorMessage(bindingResult);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+        }
         return ResponseEntity.ok(authenticationService.register(request));
     }
 
@@ -31,6 +40,14 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request){
         //logger.info("start login service");
             return ResponseEntity.ok(authenticationService.authenticate(request));
+    }
+
+    private String getValidationErrorMessage(BindingResult bindingResult) {
+        StringBuilder errorMessage = new StringBuilder();
+        for (FieldError fieldError : bindingResult.getFieldErrors()) {
+            errorMessage.append(fieldError.getDefaultMessage()).append(". ");
+        }
+        return errorMessage.toString();
     }
 }
 

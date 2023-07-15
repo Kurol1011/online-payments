@@ -22,8 +22,6 @@ public class ApplicationConfig {
 
     @Bean
     public AuthenticationProvider authenticationProvider(){
-        // Is th data access object which responsible to fetch the user details
-        //and so and so forth
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
@@ -32,9 +30,6 @@ public class ApplicationConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        //as the name indicated is the one responsible to manage the authentication
-        // Auth manager have or has a bunch of methods and one of them there is a method that
-        //allow us or help us to authenticate user based or using just the username or password
         return config.getAuthenticationManager();
     }
 
@@ -42,7 +37,5 @@ public class ApplicationConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-
 
 }

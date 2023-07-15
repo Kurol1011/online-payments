@@ -19,9 +19,15 @@ public class BankAccountController {
     }
 
     @PostMapping("/create-new-account")
-    public ResponseEntity<?> createNewAccount(){
-        bankAccountService.createNewAccount(userService.getCurrentUser(),245);
+    public ResponseEntity<?> createNewAccount(@RequestBody BalanceRequest balanceRequest){
+        bankAccountService.createNewAccount(userService.getCurrentUser(),balanceRequest.getBalance());
         return ResponseEntity.ok(HttpStatus.CREATED);
+    }
+
+    @PostMapping("/add-balance")
+    public ResponseEntity<?> addBalance(@RequestBody BalanceRequest balanceRequest){
+        bankAccountService.addBalance(balanceRequest.getBalance(),userService.getCurrentUser().getBankAccounts().get(0).getId());
+        return ResponseEntity.ok(HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/my-balance")
