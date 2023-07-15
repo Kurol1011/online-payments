@@ -7,10 +7,12 @@ import kz.myproject.onlinePay.repo.BankAccountRepository;
 import kz.myproject.onlinePay.repo.TransactionRepository;
 import kz.myproject.onlinePay.service.intf.TransactionService;
 import kz.myproject.onlinePay.util.exception.BankAccountTransactionException;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 
 import java.math.BigDecimal;
 
+@Service
 public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepository transactionRepository;
     private final BankAccountRepository bankAccountRepository;

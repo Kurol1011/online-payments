@@ -4,10 +4,12 @@ import kz.myproject.onlinePay.entity.BankAccount;
 import kz.myproject.onlinePay.entity.User;
 import kz.myproject.onlinePay.repo.BankAccountRepository;
 import kz.myproject.onlinePay.service.intf.BankAccountService;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Currency;
 
+@Service
 public class BankAccountServiceImpl implements BankAccountService {
 
     private final BankAccountRepository bankAccountRepository;
