@@ -5,5 +5,5 @@ import kz.myproject.onlinePay.entity.BankAccount;
 import java.math.BigDecimal;
 
 public interface TransactionService {
-    void makeTransfer(BankAccount fromBankAccount, BankAccount toBankAccount, BigDecimal transferAmount);
+    void makeTransfer(long fromBankAccount, long toBankAccount, BigDecimal transferAmount);
 }

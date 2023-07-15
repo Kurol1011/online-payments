@@ -31,7 +31,7 @@ public class TransactionController {
 
     @PostMapping("/make-transfer")
     public ResponseEntity<?> makeTransfer(@RequestBody TransactionData transactionData){
-        transactionService.makeTransfer( bankAccountService.getById(transactionData.getFromBankAccount()),bankAccountService.getById(transactionData.getToBankAccount()), BigDecimal.valueOf(transactionData.getAmount()));
+        transactionService.makeTransfer( transactionData.getFromBankAccount(),transactionData.getToBankAccount(), BigDecimal.valueOf(transactionData.getAmount()));
         return ResponseEntity.ok(HttpStatus.OK);
     }
 }

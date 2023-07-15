@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
@@ -29,22 +30,29 @@ public class TransactionServiceImpl implements TransactionService {
     //todo MAKE TRANSACTIONAL
     @Override
     @Transactional
-    public void makeTransfer(BankAccount fromBankAccount, BankAccount toBankAccount, BigDecimal transferAmount) {
-        if(fromBankAccount.getBalance().compareTo(transferAmount) == -1){
+    public void makeTransfer(long fromBankAccountId, long toBankAccountId, BigDecimal transferAmount) {
+
+        Optional<BankAccount> fromBankAccount = bankAccountRepository.findById(fromBankAccountId);
+        Optional<BankAccount> toBankAccount = bankAccountRepository.findById(toBankAccountId);
+
+        if(fromBankAccount.isEmpty()
+        || !userService.getCurrentUser().getBankAccounts().stream().anyMatch(ac -> ac.getId() == fromBankAccount.get().getId())
+        ){
+            throw new BankAccountTransactionException("Введенный счет в поле fromBankAccount не является вашим либо он не существует!");
+        }
+        else if(toBankAccount.isEmpty()){
+            throw new BankAccountTransactionException("Ввведенный счет в поле toBankAccount не существует!");
+        }
+        else if(fromBankAccount.get().getBalance().compareTo(transferAmount) == -1){
             throw new BankAccountTransactionException("Недостаточно средств на счете!");
         }
         else if(transferAmount.compareTo(BigDecimal.valueOf(1)) == -1){
             throw new BankAccountTransactionException("Сумма перевода должна быть ровна 1$ либо больше!");
         }
-        else if( !userService.getCurrentUser().getBankAccounts().stream().anyMatch(ac -> ac.getId() == fromBankAccount.getId())){
-            throw new BankAccountTransactionException("Введенный счет в поле fromBankAccount не является вашим!");
-        }
-        else if(bankAccountRepository.findById(toBankAccount.getId()).isEmpty()){
-            throw new BankAccountTransactionException("Ввведенный счет в поле toBankAccount не существует!");
-        }
-        fromBankAccount.setBalance(fromBankAccount.getBalance().subtract(transferAmount));
-        toBankAccount.setBalance(toBankAccount.getBalance().add(transferAmount));
-        bankAccountRepository.save(fromBankAccount);
-        bankAccountRepository.save(toBankAccount);
+        fromBankAccount.get().setBalance(fromBankAccount.get().getBalance().subtract(transferAmount));
+        toBankAccount.get().setBalance(toBankAccount.get().getBalance().add(transferAmount));
+        bankAccountRepository.save(fromBankAccount.get());
+        bankAccountRepository.save(toBankAccount.get());
+        //надо бы сюда каскадирование прикрутить
     }
 }

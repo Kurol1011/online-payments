@@ -21,7 +21,7 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler(value = {UserIsAlreadyExistException.class,ExpiredJwtException.class, BankAccountTransactionException.class})
-    public ResponseEntity<CustomExceptionResponse> handleException(UserIsAlreadyExistException e){
+    public ResponseEntity<CustomExceptionResponse> handleException(RuntimeException e){
         CustomExceptionResponse response = new CustomExceptionResponse(e.getMessage(),LocalDateTime.now());
         return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
     }
