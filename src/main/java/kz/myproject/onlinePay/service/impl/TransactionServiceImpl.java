@@ -1,6 +1,7 @@
 package kz.myproject.onlinePay.service.impl;
 
 
+import com.zaxxer.hikari.util.IsolationLevel;
 import jakarta.transaction.Transactional;
 import kz.myproject.onlinePay.entity.BankAccount;
 import kz.myproject.onlinePay.entity.Transaction;
@@ -10,6 +11,7 @@ import kz.myproject.onlinePay.service.intf.TransactionService;
 import kz.myproject.onlinePay.service.intf.UserService;
 import kz.myproject.onlinePay.util.exception.BankAccountTransactionException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Isolation;
 
 import java.math.BigDecimal;
@@ -30,7 +32,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     //todo MAKE TRANSACTIONAL
     @Override
-    @Transactional
+    @Transactional()
     public void makeTransfer(long fromBankAccountId, long toBankAccountId, BigDecimal transferAmount) {
 
         Optional<BankAccount> fromBankAccount = bankAccountRepository.findById(fromBankAccountId);
@@ -52,13 +54,13 @@ public class TransactionServiceImpl implements TransactionService {
         }
         fromBankAccount.get().setBalance(fromBankAccount.get().getBalance().subtract(transferAmount));
         toBankAccount.get().setBalance(toBankAccount.get().getBalance().add(transferAmount));
-        bankAccountRepository.save(fromBankAccount.get());
+        bankAccountRepository.save(fromBankAccount.get()); //надо бы сюда каскадирование прикрутить
         bankAccountRepository.save(toBankAccount.get());
         Transaction transaction = new Transaction();
         transaction.setFromBankAccount(fromBankAccountId);
         transaction.setToBankAccount(toBankAccountId);
         transaction.setTransferAmount(transferAmount);
         transactionRepository.save(transaction);
-        //надо бы сюда каскадирование прикрутить
+
     }
 }

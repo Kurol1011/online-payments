@@ -1,5 +1,6 @@
 package kz.myproject.onlinePay.service.impl;
 
+import jakarta.transaction.Transactional;
 import kz.myproject.onlinePay.entity.BankAccount;
 import kz.myproject.onlinePay.entity.User;
 import kz.myproject.onlinePay.repo.BankAccountRepository;
@@ -20,6 +21,7 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     @Override
+    @Transactional
     public void createNewAccount(User user,long balance) {
         BankAccount bankAccount = new BankAccount();
         bankAccount.setOwner(user);
@@ -29,6 +31,7 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     @Override
+    @Transactional
     public void addBalance(long newBalance,long bankAccountId) {
         if(newBalance<0){
             throw new BankAccountTransactionException("Введите положительный баланс");
