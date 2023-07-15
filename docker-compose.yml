@@ -1,0 +1,17 @@
+version: '3'
+services:
+  backend:
+    container_name: online-payments-app
+    image: kurol1011/onlinepay-backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgresqldb
+  postgresqldb:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=joinIsDificult558
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=online_payments_db

@@ -20,12 +20,12 @@ public class User {
 
     @Column(name="first_name")
     @NotEmpty(message = "firstName should not be empty")
-    @Pattern(regexp = "\b[A-Z][a-z]*\b",message = "Name is not valid")
+    @Pattern(regexp = "\\b[A-Z][a-z]*\\b",message = "first Name is not valid")
     private String firstName;
 
     @Column(name="last_name")
     @NotEmpty(message = "lastName should not be empty")
-    @Pattern(regexp = "\b[A-Z][a-z]*\b",message = "Name is not valid")
+    @Pattern(regexp = "\\b[A-Z][a-z]*\\b",message = "last Name is not valid")
     private String lastName;
 
     @Column(name="email")
@@ -35,7 +35,7 @@ public class User {
 
     @Column(name="password")
     @NotEmpty(message = "password should not be empty")
-    @Size(min = 2,max = 45, message = "Password must be longer 2 characters and less than 45")
+    //@Size(min = 2,max = 45, message = "Password must be longer 2 characters and less than 45")
     private String password;
 
     @OneToMany(mappedBy = "owner")
