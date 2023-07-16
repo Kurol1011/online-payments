@@ -85,4 +85,5 @@ ___
   spring.datasource.username= 
   spring.datasource.password=  
   ```
+  Также необходимо создать базу данных online_payments_db в postgresql
   И запустить OnlinePayApplication
